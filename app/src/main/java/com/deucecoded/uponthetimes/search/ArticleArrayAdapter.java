@@ -39,7 +39,15 @@ class ArticleArrayAdapter extends ArrayAdapter<Article> {
         headlineTextView.setText(article.getHeadline());
         String thumbnailUrl = article.getThumbnailUrl();
         if (!thumbnailUrl.isEmpty()) {
-            Picasso.with(getContext()).load(thumbnailUrl).into(articleImageView);
+            Picasso.with(getContext())
+                    .load(thumbnailUrl)
+                    .placeholder(R.drawable.book_open)
+                    .error(R.drawable.book_open)
+                    .into(articleImageView);
+        } else {
+            Picasso.with(getContext())
+                    .load(R.drawable.book_open)
+                    .into(articleImageView);
         }
 
         return convertView;

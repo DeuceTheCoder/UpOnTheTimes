@@ -2,7 +2,7 @@
 
 **Name of your app** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **2.5** hours spent in total
+Time spent: **2.75** hours spent in total
 
 ## User Stories
 
@@ -43,6 +43,7 @@ The following **additional** features are implemented:
 
 * [X] Integrate [Butterknife](https://jakewharton.github.io/butterknife/)
 * [X] Allow searching by pressing 'Go button' on virtual keyboard
+* [X] Use a placeholder images for articles with no media or if media cannot be retrieved
 
 ## Video Walkthrough
 
