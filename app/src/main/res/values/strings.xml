@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Up On The Times</string>
+    <string name="action_settings">Settings</string>
+    <string name="query_box_hint">Enter Search Text</string>
+    <string name="search_button_text">Search</string>
+</resources>
