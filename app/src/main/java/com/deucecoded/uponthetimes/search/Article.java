@@ -17,7 +17,7 @@ public class Article implements Serializable {
 
     private String thumbnailUrl;
 
-    public Article(JSONObject jsonObject) {
+    private Article(JSONObject jsonObject) {
         try {
             webUrl = jsonObject.getString("web_url");
             headline = jsonObject.getJSONObject("headline").getString("main");
@@ -33,7 +33,7 @@ public class Article implements Serializable {
         }
     }
 
-    public static List<Article> fromJsonArray(JSONArray jsonArray) {
+    static List<Article> fromJsonArray(JSONArray jsonArray) {
         List<Article> articles = new ArrayList<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -55,12 +55,12 @@ public class Article implements Serializable {
     }
 
     @NonNull
-    public String getHeadline() {
+    String getHeadline() {
         return headline == null ? "" : headline;
     }
 
     @NonNull
-    public String getThumbnailUrl() {
+    String getThumbnailUrl() {
         return thumbnailUrl == null ? "" : thumbnailUrl;
     }
 }

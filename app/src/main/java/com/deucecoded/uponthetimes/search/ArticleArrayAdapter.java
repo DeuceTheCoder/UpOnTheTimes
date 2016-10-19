@@ -10,13 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.deucecoded.uponthetimes.R;
-import com.deucecoded.uponthetimes.search.Article;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ArticleArrayAdapter extends ArrayAdapter<Article> {
-    public ArticleArrayAdapter(Context context, List<Article> objects) {
+class ArticleArrayAdapter extends ArrayAdapter<Article> {
+    ArticleArrayAdapter(Context context, List<Article> objects) {
         super(context, android.R.layout.simple_list_item_1, objects);
     }
 
