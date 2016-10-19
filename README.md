@@ -2,7 +2,7 @@
 
 **Name of your app** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **X** hours spent in total
+Time spent: **2.5** hours spent in total
 
 ## User Stories
 
@@ -42,6 +42,7 @@ The following **bonus** features are implemented:
 The following **additional** features are implemented:
 
 * [X] Integrate [Butterknife](https://jakewharton.github.io/butterknife/)
+* [X] Allow searching by pressing 'Go button' on virtual keyboard
 
 ## Video Walkthrough
 
@@ -62,7 +63,7 @@ Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2016] [DeuceTheCoder]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

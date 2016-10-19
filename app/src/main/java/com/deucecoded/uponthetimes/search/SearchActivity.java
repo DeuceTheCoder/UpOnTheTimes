@@ -5,17 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.deucecoded.uponthetimes.R;
-import com.deucecoded.uponthetimes.search.Article;
-import com.deucecoded.uponthetimes.search.ArticleArrayAdapter;
 import com.deucecoded.uponthetimes.view.ArticleActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnEditorAction;
 import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
@@ -61,15 +62,12 @@ public class SearchActivity extends AppCompatActivity {
         resultsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //get article to display
                 Article article = articleArrayAdapter.getItem(position);
                 if (article == null) {
                     return;
                 }
-                //create intent to display article
                 Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
                 intent.putExtra(ArticleActivity.ARTICLE_KEY, article);
-                //launch display article
                 startActivity(intent);
             }
         });
@@ -95,6 +93,16 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnEditorAction(R.id.edit_query)
+    public boolean onEditorAction(TextView v, int actionId) {
+        boolean handled = false;
+        if (actionId == EditorInfo.IME_ACTION_GO) {
+            handled = true;
+            onArticleSearch(v);
+        }
+        return handled;
     }
 
     public void onArticleSearch(View view) {

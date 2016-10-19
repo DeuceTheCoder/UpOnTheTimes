@@ -33,7 +33,10 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/btn_search"
         android:layout_toStartOf="@+id/btn_search"
-        android:hint="@string/query_box_hint" />
+        android:hint="@string/query_box_hint"
+        android:imeOptions="actionGo"
+        android:inputType="text"
+        android:maxLines="1" />
 
     <GridView
         android:id="@+id/gv_results"
