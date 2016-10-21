@@ -4,4 +4,16 @@
     <string name="query_box_hint">Enter Search Text</string>
     <string name="search_button_text">Search</string>
     <string name="article_image_description">Article lead image</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filters_label">Filters</string>
+    <string name="news_desk_filter_label">News Desk</string>
+    <string name="sort_order_filter_label">Sort Order</string>
+    <string name="begin_date_filter_label">Begin Date</string>
+    <string name="search_date_hint">01/01/1999</string>
+    <string name="fashion_style_label"><![CDATA[Fashion & Style]]></string>
+    <string name="arts_label">Arts</string>
+    <string name="sports_label">Sports</string>
+    <string name="apply_filter_label">Apply Filter(s)</string>
 </resources>

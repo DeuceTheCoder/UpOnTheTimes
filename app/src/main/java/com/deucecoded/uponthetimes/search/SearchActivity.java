@@ -33,7 +33,7 @@ import butterknife.OnEditorAction;
 import butterknife.OnItemClick;
 import cz.msebera.android.httpclient.Header;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchFilterFragment.OnFragmentInteractionListener {
 
     @BindView(R.id.edit_query)
     EditText queryEditText;
@@ -90,6 +90,11 @@ public class SearchActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_filter) {
+            SearchFilterFragment searchFilterFragment = SearchFilterFragment.newInstance();
+            searchFilterFragment.show(getSupportFragmentManager(), "filter_fragment");
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -133,5 +138,10 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onApplyFilters() {
+
     }
 }
