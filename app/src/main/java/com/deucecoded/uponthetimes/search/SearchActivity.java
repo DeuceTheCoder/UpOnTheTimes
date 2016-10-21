@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -31,6 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnEditorAction;
+import butterknife.OnItemClick;
 import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
@@ -59,18 +59,17 @@ public class SearchActivity extends AppCompatActivity {
         articles = new ArrayList<>();
         articleArrayAdapter = new ArticleArrayAdapter(this, articles);
         resultsGridView.setAdapter(articleArrayAdapter);
-        resultsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Article article = articleArrayAdapter.getItem(position);
-                if (article == null) {
-                    return;
-                }
-                Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
-                intent.putExtra(ArticleActivity.ARTICLE_KEY, article);
-                startActivity(intent);
-            }
-        });
+    }
+
+    @OnItemClick(R.id.gv_results)
+    public void launchArticleView(int position) {
+        Article article = articleArrayAdapter.getItem(position);
+        if (article == null) {
+            return;
+        }
+        Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
+        intent.putExtra(ArticleActivity.ARTICLE_KEY, article);
+        startActivity(intent);
     }
 
     @Override
