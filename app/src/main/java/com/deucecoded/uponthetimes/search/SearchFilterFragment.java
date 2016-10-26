@@ -77,9 +77,7 @@ public class SearchFilterFragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedSort = (String) parent.getItemAtPosition(position);
-                if (selectedSort.equals("Oldest")) {
-                    sortByOldest = true;
-                }
+                sortByOldest = selectedSort.equals("Oldest");
             }
 
             @Override
