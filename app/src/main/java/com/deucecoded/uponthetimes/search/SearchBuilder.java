@@ -1,7 +1,12 @@
 package com.deucecoded.uponthetimes.search;
 
 
+import android.util.Log;
+
 import com.loopj.android.http.RequestParams;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class SearchBuilder {
 
@@ -10,7 +15,7 @@ class SearchBuilder {
     private String query;
     private String earliestDate;
     private boolean isSortedByOldest;
-    private String fq;
+    private List<String> newsDesks;
 
     SearchBuilder() {
         reset();
@@ -28,8 +33,9 @@ class SearchBuilder {
         } else {
             requestParams.put("sort", "newest");
         }
-        if (fq != null && !fq.isEmpty()) requestParams.put("fq", fq);
+        if (!newsDesks.isEmpty()) requestParams.put("fq", formatDesks());
 
+        Log.d("BUILT SEARCH", requestParams.toString());
         return requestParams;
     }
 
@@ -39,7 +45,7 @@ class SearchBuilder {
         this.query = null;
         this.earliestDate = null;
         this.isSortedByOldest = false;
-        this.fq = null;
+        this.newsDesks = new ArrayList<>();
     }
 
     SearchBuilder withApiKey(String key) {
@@ -67,8 +73,17 @@ class SearchBuilder {
         return this;
     }
 
-    SearchBuilder withNewsDesks(String desks) {
-        this.fq = "news_desk:(" + desks + ")";
+    SearchBuilder withNewsDesks(List<String> desks) {
+        this.newsDesks = desks;
         return this;
+    }
+
+    private String formatDesks() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String desk : this.newsDesks) {
+            stringBuilder.append('\"').append(desk).append('\"').append(" ");
+        }
+        String desks = stringBuilder.toString().trim();
+        return "news_desk:(" + desks + ")";
     }
 }

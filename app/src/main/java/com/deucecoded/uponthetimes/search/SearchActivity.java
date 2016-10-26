@@ -145,14 +145,6 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
         searchBuilder.reset();
         searchBuilder.withEarliestDate(earliestDate);
         searchBuilder.shouldSortByOldest(sortByOldest);
-        searchBuilder.withNewsDesks(concatenateDesks(newsDesks));
-    }
-
-    private String concatenateDesks(List<String> newsDesks) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String desk : newsDesks) {
-            stringBuilder.append('\"').append(desk).append('\"').append(" ");
-        }
-        return stringBuilder.toString().trim();
+        searchBuilder.withNewsDesks(newsDesks);
     }
 }
