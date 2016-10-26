@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import com.deucecoded.uponthetimes.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +42,7 @@ public class SearchFilterFragment extends DialogFragment {
     CheckBox sportsBox;
 
     private OnFragmentInteractionListener mListener;
+    private boolean sortByOldest;
 
     public SearchFilterFragment() {
         // Required empty public constructor
@@ -70,6 +73,20 @@ public class SearchFilterFragment extends DialogFragment {
         sortOptions.add("Newest");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, sortOptions);
         sortSpinner.setAdapter(adapter);
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedSort = (String) parent.getItemAtPosition(position);
+                if (selectedSort.equals("Oldest")) {
+                    sortByOldest = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -79,6 +96,7 @@ public class SearchFilterFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_search_filter, container, false);
         ButterKnife.bind(this, view);
+        this.sortByOldest = false;
         setUpSpinner();
 
         return view;
@@ -97,8 +115,24 @@ public class SearchFilterFragment extends DialogFragment {
 
     @OnClick(R.id.btn_apply)
     public void applyAndDismiss() {
-        mListener.onApplyFilters();
+        String date = dateField.getText().toString();
+        mListener.onApplyFilters(date, sortByOldest, getCheckedDesks());
         dismiss();
+    }
+
+    private List<String> getCheckedDesks() {
+        List<String> selectedDesks = new ArrayList<>();
+        if (artsBox.isChecked()) {
+            selectedDesks.add("Arts");
+        }
+        if (fashionBox.isChecked()) {
+            selectedDesks.add("Fashion & Style");
+        }
+        if (sportsBox.isChecked()) {
+            selectedDesks.add("Sports");
+        }
+
+        return selectedDesks;
     }
 
     @Override
@@ -118,6 +152,6 @@ public class SearchFilterFragment extends DialogFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onApplyFilters();
+        void onApplyFilters(String earliestDate, boolean sortOrder, List<String> filters);
     }
 }

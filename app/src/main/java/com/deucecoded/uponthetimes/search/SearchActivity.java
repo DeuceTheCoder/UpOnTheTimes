@@ -18,7 +18,6 @@ import com.deucecoded.uponthetimes.R;
 import com.deucecoded.uponthetimes.view.ArticleActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +42,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
     GridView resultsGridView;
     List<Article> articles;
     private ArticleArrayAdapter articleArrayAdapter;
+    private SearchBuilder searchBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        searchBuilder = new SearchBuilder();
 
         setupViews();
     }
@@ -117,12 +118,11 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
         String apiKey = "c019a04278564fe08fe16424d57c91b8";
 
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("api_key", apiKey);
-        requestParams.put("page", 0);
-        requestParams.put("q", query);
+        searchBuilder.withApiKey(apiKey)
+                .withQuery(query)
+                .withPage(0);
 
-        httpClient.get(url, requestParams, new JsonHttpResponseHandler() {
+        httpClient.get(url, searchBuilder.build(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("DEBUG", response.toString());
@@ -141,7 +141,18 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
     }
 
     @Override
-    public void onApplyFilters() {
+    public void onApplyFilters(String earliestDate, boolean sortByOldest, List<String> newsDesks) {
+        searchBuilder.reset();
+        searchBuilder.withEarliestDate(earliestDate);
+        searchBuilder.shouldSortByOldest(sortByOldest);
+        searchBuilder.withNewsDesks(concatenateDesks(newsDesks));
+    }
 
+    private String concatenateDesks(List<String> newsDesks) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String desk : newsDesks) {
+            stringBuilder.append('\"').append(desk).append('\"').append(" ");
+        }
+        return stringBuilder.toString().trim();
     }
 }
