@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -43,6 +44,8 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
     List<Article> articles;
     private ArticleArrayAdapter articleArrayAdapter;
     private SearchBuilder searchBuilder;
+    private boolean isSearchInProgress;
+    private static String TAG = SearchActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         searchBuilder = new SearchBuilder();
+        isSearchInProgress = false;
 
         setupViews();
     }
@@ -59,7 +63,26 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
     private void setupViews() {
         articles = new ArrayList<>();
         articleArrayAdapter = new ArticleArrayAdapter(this, articles);
+        setupScrollView();
+    }
+
+    private void setupScrollView() {
         resultsGridView.setAdapter(articleArrayAdapter);
+        resultsGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(isSearchInProgress || articleArrayAdapter.isEmpty()) {
+                    return;
+                }
+                if(firstVisibleItem + visibleItemCount >= totalItemCount) {
+                    getNextPage();
+                }
+            }
+        });
     }
 
     @OnItemClick(R.id.gv_results)
@@ -114,18 +137,26 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
         String query = queryEditText.getText().toString();
         articleArrayAdapter.clear();
 
+        performSearch(query);
+    }
+
+    private void performSearch(String query) {
         AsyncHttpClient httpClient = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
         String apiKey = "c019a04278564fe08fe16424d57c91b8";
 
-        searchBuilder.withApiKey(apiKey)
-                .withQuery(query)
-                .withPage(0);
+        isSearchInProgress = true;
+
+        searchBuilder.withApiKey(apiKey);
+        if(query != null) {
+            searchBuilder.withQuery(query);
+        }
 
         httpClient.get(url, searchBuilder.build(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("DEBUG", response.toString());
+                Log.d(TAG, "Search Call response: " + response.toString());
+                isSearchInProgress = false;
 
                 JSONArray articleResultsArray;
 
@@ -137,6 +168,11 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
+                isSearchInProgress = false;
+            }
         });
     }
 
@@ -146,5 +182,11 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
         searchBuilder.withEarliestDate(earliestDate);
         searchBuilder.shouldSortByOldest(sortByOldest);
         searchBuilder.withNewsDesks(newsDesks);
+    }
+
+    public void getNextPage() {
+        searchBuilder.incrementPage();
+
+        performSearch(null);
     }
 }

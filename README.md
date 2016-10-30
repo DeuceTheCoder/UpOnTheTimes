@@ -14,9 +14,9 @@ The following **required** functionality is completed:
   * [ ] Begin Date (using a date picker)
   * [X] News desk values (Arts, Fashion & Style, Sports)
   * [X] Sort order (oldest or newest)
-* [ ] Subsequent searches have any filters applied to the search results
+* [X] Subsequent searches have any filters applied to the search results
 * [X] User can tap on any image in results to see the full text of article **full-screen**
-* [ ] User can **scroll down to see more articles**. The maximum number of articles is limited by the API search.
+* [X] User can **scroll down to see more articles**. The maximum number of articles is limited by the API search.
 
 The following **optional** features are implemented:
 

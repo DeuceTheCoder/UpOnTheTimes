@@ -86,4 +86,8 @@ class SearchBuilder {
         String desks = stringBuilder.toString().trim();
         return "news_desk:(" + desks + ")";
     }
+
+    void incrementPage() {
+        page++;
+    }
 }
