@@ -2,7 +2,7 @@
 
 **Up On The Times** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **4.75** hours spent in total
+Time spent: **5.75** hours spent in total
 
 ## User Stories
 
@@ -10,8 +10,8 @@ The following **required** functionality is completed:
 
 * [X] User can **search for news article** by specifying a query and launching a search. Search displays a grid of image results from the New York Times Search API.
 * [X] User can click on "settings" which allows selection of **advanced search options** to filter results
-* [ ] User can configure advanced search filters such as:
-  * [ ] Begin Date (using a date picker)
+* [X] User can configure advanced search filters such as:
+  * [X] Begin Date (using a date picker)
   * [X] News desk values (Arts, Fashion & Style, Sports)
   * [X] Sort order (oldest or newest)
 * [X] Subsequent searches have any filters applied to the search results
