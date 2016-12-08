@@ -1,5 +1,6 @@
 package com.deucecoded.uponthetimes.search;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -9,13 +10,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.deucecoded.uponthetimes.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,9 +35,9 @@ import butterknife.OnClick;
  * Use the {@link SearchFilterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFilterFragment extends DialogFragment {
+public class SearchFilterFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     @BindView(R.id.date_edit_text)
-    EditText dateField;
+    TextView dateField;
     @BindView(R.id.sort_spinner)
     Spinner sortSpinner;
     @BindView(R.id.cb_arts)
@@ -43,6 +49,8 @@ public class SearchFilterFragment extends DialogFragment {
 
     private OnFragmentInteractionListener mListener;
     private boolean sortByOldest;
+    private Date selectedDate;
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
     public SearchFilterFragment() {
         // Required empty public constructor
@@ -96,6 +104,7 @@ public class SearchFilterFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         this.sortByOldest = false;
         setUpSpinner();
+        dateField.setText(R.string.no_date_selected);
 
         return view;
     }
@@ -113,9 +122,15 @@ public class SearchFilterFragment extends DialogFragment {
 
     @OnClick(R.id.btn_apply)
     public void applyAndDismiss() {
-        String date = dateField.getText().toString();
-        mListener.onApplyFilters(date, sortByOldest, getCheckedDesks());
+        mListener.onApplyFilters(selectedDate, sortByOldest, getCheckedDesks());
         dismiss();
+    }
+
+    @OnClick(R.id.date_edit_text)
+    public void displayDatePicker() {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setTargetFragment(SearchFilterFragment.this, 0);
+        datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
     private List<String> getCheckedDesks() {
@@ -139,6 +154,15 @@ public class SearchFilterFragment extends DialogFragment {
         mListener = null;
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        selectedDate = calendar.getTime();
+
+        dateField.setText(dateFormat.format(selectedDate));
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -150,6 +174,6 @@ public class SearchFilterFragment extends DialogFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onApplyFilters(String earliestDate, boolean sortOrder, List<String> filters);
+        void onApplyFilters(Date earliestDate, boolean sortOrder, List<String> filters);
     }
 }

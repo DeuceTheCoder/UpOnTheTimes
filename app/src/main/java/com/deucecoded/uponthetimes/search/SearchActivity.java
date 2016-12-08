@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -75,10 +76,10 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(isSearchInProgress || articleArrayAdapter.isEmpty()) {
+                if (isSearchInProgress || articleArrayAdapter.isEmpty()) {
                     return;
                 }
-                if(firstVisibleItem + visibleItemCount >= totalItemCount) {
+                if (firstVisibleItem + visibleItemCount >= totalItemCount) {
                     getNextPage();
                 }
             }
@@ -148,7 +149,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
         isSearchInProgress = true;
 
         searchBuilder.withApiKey(apiKey);
-        if(query != null) {
+        if (query != null) {
             searchBuilder.withQuery(query);
         }
 
@@ -177,7 +178,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFilterFra
     }
 
     @Override
-    public void onApplyFilters(String earliestDate, boolean sortByOldest, List<String> newsDesks) {
+    public void onApplyFilters(Date earliestDate, boolean sortByOldest, List<String> newsDesks) {
         searchBuilder.reset();
         searchBuilder.withEarliestDate(earliestDate);
         searchBuilder.shouldSortByOldest(sortByOldest);

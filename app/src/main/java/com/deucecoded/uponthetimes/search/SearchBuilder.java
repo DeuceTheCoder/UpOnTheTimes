@@ -5,15 +5,19 @@ import android.util.Log;
 
 import com.loopj.android.http.RequestParams;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 class SearchBuilder {
 
     private String apiKey;
     private int page;
     private String query;
-    private String earliestDate;
+    private Date earliestDate;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
     private boolean isSortedByOldest;
     private List<String> newsDesks;
 
@@ -26,8 +30,8 @@ class SearchBuilder {
         requestParams.put("api_key", apiKey);
         requestParams.put("page", page);
         requestParams.put("q", query);
-        if (earliestDate != null && !earliestDate.isEmpty())
-            requestParams.put("begin_date", earliestDate);
+        if (earliestDate != null)
+            requestParams.put("begin_date", dateFormat.format(earliestDate));
         if (isSortedByOldest) {
             requestParams.put("sort", "oldest");
         } else {
@@ -63,7 +67,7 @@ class SearchBuilder {
         return this;
     }
 
-    SearchBuilder withEarliestDate(String earliestDate) {
+    SearchBuilder withEarliestDate(Date earliestDate) {
         this.earliestDate = earliestDate;
         return this;
     }

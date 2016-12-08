@@ -4,9 +4,6 @@
     <string name="query_box_hint">Enter Search Text</string>
     <string name="search_button_text">Search</string>
     <string name="article_image_description">Article lead image</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="filters_label">Filters</string>
     <string name="news_desk_filter_label">News Desk</string>
     <string name="sort_order_filter_label">Sort Order</string>
@@ -16,4 +13,5 @@
     <string name="arts_label">Arts</string>
     <string name="sports_label">Sports</string>
     <string name="apply_filter_label">Apply Filter(s)</string>
+    <string name="no_date_selected">Select Date</string>
 </resources>
